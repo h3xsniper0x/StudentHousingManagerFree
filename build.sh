@@ -20,7 +20,7 @@ print('Axes attempts cleared.')
 # 2. إنشاء أو تحديث كلمة مرور الـ Admin
 User = get_user_model()
 username = 'nawaf'
-password = '782007038~!@' # تأكد من حفظ هذه الكلمة جيداً
+password = 'nawaf782007038' # تأكد من حفظ هذه الكلمة جيداً
 
 user, created = User.objects.get_or_create(username=username, defaults={'email': 'admin@example.com'})
 user.set_password(password)
