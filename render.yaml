@@ -1,0 +1,20 @@
+databases:
+  - name: student-housing-db
+    databaseName: student_housing
+    user: student_user
+
+services:
+  - type: web
+    name: student-housing-manager
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn StudentHousingManager.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
