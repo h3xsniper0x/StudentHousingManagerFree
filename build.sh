@@ -10,13 +10,22 @@ python manage.py collectstatic --noinput
 
 # Apply database migrations
 python manage.py migrate
-# إنشاء Superuser تلقائياً إذا لم يكن موجوداً
 python manage.py shell <<EOF
 from django.contrib.auth import get_user_model
+from axes.models import AccessAttempt
+# 1. تصفير محاولات الحظر السابقة لفتح الباب أمامك
+AccessAttempt.objects.all().delete()
+print('Axes attempts cleared.')
+
+# 2. إنشاء أو تحديث كلمة مرور الـ Admin
 User = get_user_model()
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', '782007038~!@')
-    print('Superuser created successfully')
-else:
-    print('Superuser already exists')
+username = 'nawaf'
+password = '782007038~!@' # تأكد من حفظ هذه الكلمة جيداً
+
+user, created = User.objects.get_or_create(username=username, defaults={'email': 'admin@example.com'})
+user.set_password(password)
+user.is_staff = True
+user.is_superuser = True
+user.save()
+print(f'User {username} updated/created successfully.')
 EOF
